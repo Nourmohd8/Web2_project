@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">Admin Panel</div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <h1>Welcome Admin</h1>
+    <p>Manage student requests and take quick actions</p>
+  </header>
+
+  <!-- Dashboard -->
+  <main class="dashboard-grid">
+  <!-- First Row -->
+  <div class="dashboard-row">
+    <section class="dashboard-card">
+      <h2>Live Request Stats</h2>
+      <ul class="course-list">
+        <li>Pending: {{stats.pending}}</li>
+        <li>Approved: {{stats.approved}}</li>
+        <li>Rejected: {{stats.rejected}}</li>
+      </ul>
+    </section>
+
+    <section class="dashboard-card">
+      <h2>Quick Action</h2>
+      <form action="/admin/autoApproveCapstone" method="POST">
+        <button type="submit">Auto-Approve All Capstone Requests</button>
+      </form>
+    </section>
+  </div>
+
+  <!-- Full Width Section Below -->
+  <section class="dashboard-card full-width">
+  <h2>Course Enrollment Requests</h2>
+  <div class="table-container">
+    <table class="styled-table">
+      <thead>
+  <tr>
+    <th>Student</th>
+    <th>Course</th>
+    <th>Status</th>
+    <th>Submitted At</th>
+    <th>Estimated Completion</th> 
+    <th>Action</th>
+  </tr>
+</thead>
+<tbody>
+  {{#each courseRequests}}
+    <tr>
+      <td>{{studentName}}</td>
+      <td>{{courseName}}</td>
+      <td>
+        {{#if (eq status "approved")}}<span class="status approved">Approved</span>{{/if}}
+        {{#if (eq status "pending")}}<span class="status pending">Pending</span>{{/if}}
+        {{#if (eq status "rejected")}}<span class="status rejected">Rejected</span>{{/if}}
+      </td>
+      <td>{{this.createdAt}}</td>
+      <td>{{this.estimatedCompletion}}</td>
+      <td>
+        {{#if (eq status "pending")}}
+          <form method="POST" action="/approveCourse/{{_id}}" style="display:inline;">
+            <button class="btn-approve">✔ Approve</button>
+          </form>
+          <form method="POST" action="/rejectCourse/{{_id}}" style="display:inline;">
+            <button class="btn-reject">✖ Reject</button>
+          </form>
+        {{else}} — {{/if}}
+      </td>
+    </tr>
+  {{/each}}
+</tbody>
+
+    </table>
+  </div>
+</section>
+
+</main>
+
+</body>
+</html>
