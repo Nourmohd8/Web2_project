@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>New Request</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container form-box">
+    <h2>Submit New Request</h2>
+    <form action="/submitRequest" method="POST">
+      <label>Request Type:</label>
+      <select name="requestType" required>
+        <option value="Capstone">Capstone</option>
+        <option value="Course Swap">Course Swap</option>
+        <option value="Overload Request">Overload Request</option>
+        <option value="General Inquiry">General Inquiry</option>
+      </select>
+
+      <label>Reason:</label>
+      <textarea name="reason" rows="4" placeholder="Explain your reason..." required></textarea>
+
+      <button type="submit">Submit Request</button>
+    </form>
+  </div>
+</body>
+</html>
