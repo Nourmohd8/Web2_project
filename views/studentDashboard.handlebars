@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">CourseManager</div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Welcome -->
+  <header class="hero">
+    <h1>Welcome, {{name}}</h1>
+    <p>This is your personalized student dashboard.</p>
+  </header>
+
+  <!-- Dashboard -->
+  <main class="dashboard-grid">
+
+    <!-- Enroll in Course -->
+    <section class="dashboard-card">
+  <h2>Enroll in a Course</h2>
+  <form action="/enrollCourse" method="POST">
+    <select name="courseName" required>
+      <option value="Math 1030 - Calculus I">Math 1030 - Calculus I</option>
+      <option value="INFS 3201 - Web Technology II">INFS 3201 - Web Technology II</option>
+      <option value="COMM 1020 - English Communication">COMM 1020 - English Communication</option>
+    </select>
+    <button type="submit">Enroll</button>
+  </form>
+</section>
+
+
+    <!-- Enrolled Courses -->
+    <section class="dashboard-card">
+  <h2>My Course Requests</h2>
+  <ul class="course-list">
+    {{#each courseRequests}}
+      <li>
+        {{courseName}} - 
+        <strong>{{status}}</strong>
+        {{#if (eq status "pending")}} {{/if}}
+        {{#if (eq status "approved")}} {{/if}}
+        {{#if (eq status "rejected")}} {{/if}}
+      </li>
+    {{/each}}
+  </ul>
+</section>
+
+{{!-- <form action="/enrollCourse" method="POST">
+  <select name="courseName" >
+    <option value="Math 101 - Calculus I">Math 101 - Calculus I</option>
+    <option value="DSAI 2103 - Introduction to AI">DSAI 2103 - Introduction to AI</option>
+    <option value="INFS 3201 - Backend Programming">INFS 3201 - Backend Programming</option>
+    <option value="ENGL 1200 - Academic Writing">ENGL 1200 - Academic Writing</option>
+  </select>
+  <button type="submit">Enroll</button>
+</form> --}}
+
+
+
+    <!-- Study Planner -->
+    <section class="dashboard-card">
+      <h2>Study Planner</h2>
+      <form id="planner-form">
+        <input type="text" id="taskInput" placeholder="Add new task..." required />
+        <button type="submit">Add</button>
+      </form>
+      <ul id="taskList" class="todo-list"></ul>
+    </section>
+
+  </main>
+
+  <script>
+    // Course Enrollment Logic
+    const courseForm = document.getElementById('enroll-form');
+    const courseSelect = document.getElementById('course-select');
+    const courseList = document.getElementById('course-list');
+    const enrolledCourses = new Set();
+
+    courseForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const selectedCourse = courseSelect.value;
+      if (!enrolledCourses.has(selectedCourse)) {
+        enrolledCourses.add(selectedCourse);
+        const li = document.createElement('li');
+        li.textContent = selectedCourse;
+        courseList.appendChild(li);
+      }
+    });
+
+    // Study Planner Logic
+    const plannerForm = document.getElementById('planner-form');
+    const taskInput = document.getElementById('taskInput');
+    const taskList = document.getElementById('taskList');
+
+    plannerForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const taskText = taskInput.value.trim();
+      if (taskText !== '') {
+        const li = document.createElement('li');
+        li.textContent = taskText;
+        const delBtn = document.createElement('button');
+        delBtn.textContent = '✖';
+        delBtn.className = 'delete-btn';
+        delBtn.onclick = () => li.remove();
+        li.appendChild(delBtn);
+        taskList.appendChild(li);
+        taskInput.value = '';
+      }
+    });
+  </script>
+</body>
+</html>
