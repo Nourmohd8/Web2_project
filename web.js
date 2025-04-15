@@ -45,7 +45,7 @@ app.get('/login', (req, res) => res.render('login'));
 app.post('/register', async (req, res) => {
   const { name, email, password, type } = req.body;
   try {
-      await business.registerUser(name, email, password, type);
+      await business.userRegistration(name, email, password, type);
       res.redirect('/login');
   } catch (e) {
       res.render('register', { error: e.message, name, email, type });
@@ -55,7 +55,10 @@ app.post('/register', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    const result = await business.authenticateUser(email, password);
+    const result = await business.userAthentication(email, password);
+    
+    console.log('Login Result:', result);
+    
     if (result) {
         res.cookie('sessionId', result.sessionId, { httpOnly: true });
         res.redirect(result.user.type === 'admin' ? '/adminDashboard' : '/studentDashboard');

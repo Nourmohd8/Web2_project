@@ -5,11 +5,26 @@ const url = 'mongodb+srv://60099846:Nourmohd88@cluster0.mw4po.mongodb.net/';
 const dbName = 'finalProject';
 const client = new MongoClient(url);
 
+
+
+
+// async function connectDB() {
+//     if (!client.topology || !client.topology.isConnected()) {
+//         await client.connect();
+//     }
+//     return client.db(dbName);
+// }
+
 async function connectDB() {
-    if (!client.topology || !client.topology.isConnected()) {
-        await client.connect();
-    }
-    return client.db(dbName);
+  try {
+      
+      await client.connect();
+      console.log('Connected to MongoDB');
+      return client.db(dbName);  // Return the database object
+  } catch (err) {
+      console.error('Error connecting to MongoDB:', err);
+      throw new Error('Failed to connect to MongoDB');
+  }
 }
 
 function hashPassword(password) {

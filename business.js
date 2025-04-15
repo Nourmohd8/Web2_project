@@ -138,6 +138,5 @@ module.exports = {
     getCourseStats,
     submitCourseRequest,
     formatDateTime,
-    calculateEstimatedCompletion,
-    createCourseRequest
+    calculateEstimatedCompletion
 };
